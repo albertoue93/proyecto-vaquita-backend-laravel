@@ -13,7 +13,17 @@ use Illuminate\Http\Request;
 |
 */
 Route::group(['middleware' => 'jwt.auth'], function() {
+    /* FINCA API */
     Route::get('/fincas', 'FincaController@index');
+    Route::post("/fincas/store","FincaController@store");
+    Route::get("/fincas/{id}", "FincaController@show");
+    Route::delete("/fincas/delete/{id}", "FincaController@destroy");
+
+    /* ANIMAL API */
+    Route::get('/animal', 'AnimalController@index');
+    Route::post("/animal/store","AnimalController@store");
+    Route::get("/animal/{id}", "AnimalController@show");
+    Route::delete("/animal/delete/{id}", "AnimalController@destroy");
 });
 
 Route::post('/signup', 'UserController@signUp');

@@ -8,6 +8,6 @@ class Finca extends Model
 {
     //
     protected $fillable = [
-        'nombreFina'
+        'nombreFinca'
     ];
 }
