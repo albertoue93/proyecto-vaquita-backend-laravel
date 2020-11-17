@@ -12,14 +12,20 @@ use Illuminate\Http\Request;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
-
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
 Route::group(['middleware' => 'jwt.auth'], function() {
+    /* FINCA API */
     Route::get('/fincas', 'FincaController@index');
+    Route::post("/fincas/store","FincaController@store");
+    Route::get("/fincas/{id}", "FincaController@show");
+    Route::delete("/fincas/delete/{id}", "FincaController@destroy");
+
+    /* ANIMAL API */
+    Route::get('/animal', 'AnimalController@index');
+    Route::post("/animal/store","AnimalController@store");
+    Route::get("/animal/{id}", "AnimalController@show");
+    Route::delete("/animal/delete/{id}", "AnimalController@destroy");
 });
 
 Route::post('/signup', 'UserController@signUp');
 Route::post('/signin', 'UserController@signIn');
+Route::get('/refreshToken', 'FrontEndUserController@refreshToken');
