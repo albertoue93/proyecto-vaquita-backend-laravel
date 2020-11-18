@@ -47,7 +47,7 @@ class ApartoController extends Controller
         //
         $validator = Validator::make($request->all(),
             [
-                "nombreAparto" => "required",
+                "numeroAparto" => "required",
                 "mts2" => "required",
                 "finca_id" => "required"
             ]
@@ -60,7 +60,7 @@ class ApartoController extends Controller
 
         $aparto_id = $request->id;
          $apartoArray = array(
-            "nombreAparto" => $request->nombreAparto,
+            "numeroAparto" => $request->numeroAparto,
             "mts2" => $request->mts2,
             "finca_id" => $request->finca_id
         );
@@ -81,7 +81,7 @@ class ApartoController extends Controller
         else {
             $aparto = Aparto::create($apartoArray);
             if(!is_null($aparto)) {            
-                return response()->json(["status" => $this->status, "success" => true, "message" => "aparto record created successfully", "data" => $finca]);
+                return response()->json(["status" => $this->status, "success" => true, "message" => "aparto record created successfully", "data" => $aparto]);
             }    
             else {
                 return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! failed to create."]);
