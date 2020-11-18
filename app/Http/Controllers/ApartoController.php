@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Validator;
+use App\Aparto;
 
 class ApartoController extends Controller
 {
+    private $status = 200;
     /**
      * Display a listing of the resource.
      *
@@ -14,6 +17,13 @@ class ApartoController extends Controller
     public function index()
     {
         //
+        $apartos = Aparto::all();
+        if(count($apartos) > 0) {
+            return response()->json(["status" => $this->status, "success" => true, "count" => count($apartos), "data" => $apartos]);
+        }
+        else {
+            return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! no record found"]);
+        }
     }
 
     /**
@@ -35,6 +45,48 @@ class ApartoController extends Controller
     public function store(Request $request)
     {
         //
+        $validator = Validator::make($request->all(),
+            [
+                "nombreAparto" => "required",
+                "mts2" => "required",
+                "finca_id" => "required"
+            ]
+        );
+
+        // if validation fails
+        if($validator->fails()) {
+            return response()->json(["status" => "failed", "validation_errors" => $validator->errors()]);
+        }
+
+        $aparto_id = $request->id;
+         $apartoArray = array(
+            "nombreAparto" => $request->nombreAparto,
+            "mts2" => $request->mts2,
+            "finca_id" => $request->finca_id
+        );
+
+        if($aparto_id !="") {           
+            $aparto = Aparto::find($aparto_id);
+            if(!is_null($aparto)){
+                $updated_status = Aparto::where("id", $aparto_id)->update($apartoArray);
+                if($updated_status == 1) {
+                    return response()->json(["status" => $this->status, "success" => true, "message" => "aparto detail updated successfully"]);
+                }
+                else {
+                    return response()->json(["status" => "failed", "message" => "Whoops! failed to update, try again."]);
+                }               
+            }                   
+        }
+
+        else {
+            $aparto = Aparto::create($apartoArray);
+            if(!is_null($aparto)) {            
+                return response()->json(["status" => $this->status, "success" => true, "message" => "aparto record created successfully", "data" => $finca]);
+            }    
+            else {
+                return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! failed to create."]);
+            }
+        }
     }
 
     /**
@@ -46,6 +98,13 @@ class ApartoController extends Controller
     public function show($id)
     {
         //
+        $aparto = Aparto::find($id);
+        if(!is_null($aparto)) {
+            return response()->json(["status" => $this->status, "success" => true, "data" => $aparto]);
+        }
+        else {
+            return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! finca not found"]);
+        }
     }
 
     /**
@@ -80,5 +139,18 @@ class ApartoController extends Controller
     public function destroy($id)
     {
         //
+        $aparto = Aparto::find($id);
+        if(!is_null($aparto)) {
+            $delete_status = Aparto::where("id", $id)->delete();
+            if($delete_status == 1) {
+                return response()->json(["status" => $this->status, "success" => true, "message" => "aparto record deleted successfully"]);
+            }
+            else{
+                return response()->json(["status" => "failed", "message" => "failed to delete, please try again"]);
+            }
+        }
+        else {
+            return response()->json(["status" => "failed", "message" => "Whoops! finca not found with this id"]);
+        }
     }
 }

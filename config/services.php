@@ -40,4 +40,10 @@ return [
         ],
     ],
 
+    'google' => [
+        'client_id' => env('526770419242-tnc3au4etabfnpi5jg77640l5hg69mb8.apps.googleusercontent.com'),
+        'client_secret' => env('CS0m6otLafJjTI4x7zzQELHv'),
+        'redirect' => env('http://localhost:3000/auth/google'),
+    ],
+
 ];

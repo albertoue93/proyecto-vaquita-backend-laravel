@@ -24,6 +24,12 @@ Route::group(['middleware' => 'jwt.auth'], function() {
     Route::post("/animal/store","AnimalController@store");
     Route::get("/animal/{id}", "AnimalController@show");
     Route::delete("/animal/delete/{id}", "AnimalController@destroy");
+
+    /* APARTO API */
+    Route::get('/aparto', 'ApartoController@index');
+    Route::post("/aparto/store","ApartoController@store");
+    Route::get("/aparto/{id}", "ApartoController@show");
+    Route::delete("/aparto/delete/{id}", "ApartoController@destroy");
 });
 
 Route::post('/signup', 'UserController@signUp');
