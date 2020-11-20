@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Aparto;
+use DB;
 
 class ApartoController extends Controller
 {
@@ -17,7 +18,9 @@ class ApartoController extends Controller
     public function index()
     {
         //
-        $apartos = Aparto::all();
+        $apartos = DB::select('SELECT a.id, a.numeroAparto, a.mts2, a.finca_id, f.nombreFinca FROM apartos AS a
+        INNER JOIN fincas AS f ON a.finca_id = f.id');
+
         if(count($apartos) > 0) {
             return response()->json(["status" => $this->status, "success" => true, "count" => count($apartos), "data" => $apartos]);
         }
@@ -150,7 +153,19 @@ class ApartoController extends Controller
             }
         }
         else {
-            return response()->json(["status" => "failed", "message" => "Whoops! finca not found with this id"]);
+            return response()->json(["status" => "failed", "message" => "Whoops! aparto not found with this id"]);
         }
+    }
+
+    public function destroy2(Request $request)
+    {
+        //
+        $ids = $request->ids;
+        foreach($ids as $id){
+            $delete_status = Aparto::where('id',$id)->delete();
+        }
+        
+        return response()->json(["message" => "aparto record updateted successfully"],200);
+
     }
 }
