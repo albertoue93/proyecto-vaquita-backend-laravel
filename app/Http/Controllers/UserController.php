@@ -18,7 +18,20 @@ class UserController extends Controller
     public function signIn(Request $request) 
     {
     	try {
-	    	if (! $token = JWTAuth::attempt(['email' => $request->email, 'password' => $request->password])) {
+	    	if (! $token = JWTAuth::attempt(['email' => $request->email, 'password' => $request->password, 'rol' => 'admin'])) {
+	    		return response()->json(['error' => 'invalid_credentials'], 401);
+	    	}
+	    } catch (JWTException $e) {
+	    	return response()->json(['error' => 'could_not_create_token'], 500);
+	    }
+
+    	return response()->json(compact('token'));
+    }
+
+    public function signInSocial(Request $request) 
+    {
+    	try {
+	    	if (! $token = JWTAuth::attempt(['email' => $request->email, 'password' => $request->password, 'rol' => 'viewer'])) {
 	    		return response()->json(['error' => 'invalid_credentials'], 401);
 	    	}
 	    } catch (JWTException $e) {

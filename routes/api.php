@@ -13,9 +13,7 @@ use Illuminate\Http\Request;
 |
 */
 Route::group(['middleware' => 'jwt.auth'], function() {
-   
-});
- /* FINCA API */
+     /* FINCA API */
  Route::get('/fincas', 'FincaController@index');
  Route::post("/fincas/store","FincaController@store");
  Route::get("/fincas/{id}", "FincaController@show");
@@ -38,6 +36,9 @@ Route::group(['middleware' => 'jwt.auth'], function() {
  Route::delete("/aparto/delete/{id}", "ApartoController@destroy");
  Route::delete("/aparto/bulk-delete", "ApartoController@destroy2");
 
+});
+
 Route::post('/signup', 'UserController@signUp');
 Route::post('/signin', 'UserController@signIn');
-Route::get('/refreshToken', 'FrontEndUserController@refreshToken');
+Route::post('/signinS', 'UserController@signInSocial');
+Route::get('/refreshToken', 'UserController@refreshToken');
