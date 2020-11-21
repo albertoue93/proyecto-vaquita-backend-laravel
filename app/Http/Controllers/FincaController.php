@@ -152,4 +152,16 @@ class FincaController extends Controller
             return response()->json(["status" => "failed", "message" => "Whoops! finca not found with this id"]);
         }
     }
+
+    public function destroy2(Request $request)
+    {
+        //
+        $ids = $request->ids;
+        foreach($ids as $id){
+            $delete_status = Finca::where('id',$id)->delete();
+        }
+       
+        return response()->json(["message" => "finca record updateted successfully"],200);
+
+    }
 }

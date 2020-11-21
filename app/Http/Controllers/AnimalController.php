@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Validator;
 use App\Animal;
+use DB;
 
 class AnimalController extends Controller
 {
@@ -17,7 +18,9 @@ class AnimalController extends Controller
     public function index()
     {
         //
-        $animales = Animal::all();
+        $animales = DB::select('SELECT a.*, f.nombreFinca FROM animales AS a 
+        INNER JOIN fincas AS f ON a.finca_id = f.id');
+        
         if(count($animales) > 0) {
             return response()->json(["status" => $this->status, "success" => true, "count" => count($animales), "data" => $animales]);
         }
@@ -158,5 +161,29 @@ class AnimalController extends Controller
         else {
             return response()->json(["status" => "failed", "message" => "Whoops! animal not found with this id"]);
         }
+    }
+
+    public function destroy2(Request $request)
+    {
+        //
+        $ids = $request->ids;
+        foreach($ids as $id){
+            $delete_status = Animal::where('id',$id)->delete();
+        }
+        
+        return response()->json(["message" => "animal record deleted successfully"],200);
+
+    }
+
+    public function updateStatus(Request $request)
+    {
+        //
+        $ids = $request->ids;
+        foreach($ids as $id){
+            $delete_status = Animal::find($id)->update(['estado' => 'vendido']);
+        }
+        
+        return response()->json(["message" => "animal record updateted successfully"],200);
+
     }
 }
