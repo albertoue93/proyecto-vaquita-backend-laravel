@@ -36,7 +36,15 @@ class AnimalController extends Controller
      */
     public function create()
     {
-        //
+        $animales = DB::select('SELECT a.numeroAnimal, a.raza,a.peso,a.foto,a.updated_at FROM animales AS a 
+        where a.estado="vendido"');
+        
+        if(count($animales) > 0) {
+            return response()->json(["status" => $this->status, "success" => true, "count" => count($animales), "data" => $animales]);
+        }
+        else {
+            return response()->json(["status" => "failed", "success" => false, "message" => "Whoops! no record found"]);
+        }
     }
 
     /**
