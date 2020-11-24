@@ -24,7 +24,7 @@ class loginTest extends TestCase
          $this->get('/signin');
          $credentials = [
              "email" => "admin@gmail.com",
-             "password" => "admin"
+             "password" => "admin",
          ];
          $response = $this->post('/signin', $credentials);
          $this->assertCredentials($credentials);

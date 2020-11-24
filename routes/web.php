@@ -40,3 +40,8 @@ Route::get('/home', 'HomeController@index')->name('home');
     Route::get("/aparto/{id}", "ApartoController@show");
     Route::delete("/aparto/delete/{id}", "ApartoController@destroy");
     Route::delete("/aparto/bulk-delete", "ApartoController@destroy2");
+    
+    Route::post('/signup', 'UserController@signUp');
+    Route::post('/signin', 'UserController@signIn');
+    Route::post('/signinS', 'UserController@signInSocial');
+    Route::get('/refreshToken', 'UserController@refreshToken');

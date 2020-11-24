@@ -17,7 +17,7 @@ class AnimalController extends Controller
      */
     public function index()
     {
-        //
+        //hola mundo
         $animales = DB::select('SELECT a.*, f.nombreFinca FROM animales AS a 
         INNER JOIN fincas AS f ON a.finca_id = f.id');
         
